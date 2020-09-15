@@ -1,19 +1,40 @@
 ﻿using System;
+using System.Linq;
 
 namespace Zork
 {
 
-    class Program
+    internal class Program
     {
-       private static void Main()
+        private static string CurrentRoom
+        {
+            get
+            {
+                return Rooms[Location.Row, Location.Column];
+            }
+        
+            set
+            {
+                for (int column = 0; column < Rooms.Length; column++)
+                {
+                    if (Rooms[Location.Column, Location.Row] == value)
+                    {
+                        Location.Column = column;
+                        break;
+                    }
+                
+               }
+                throw new Exception("Room not found.");
+            }
+        }
+         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Zork!");
 
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
-                Console.WriteLine(Rooms[CurrentRoomIndex]);
-                Console.Write("> ");
+                Console.Write($"{CurrentRoom}\n>");
                 command = ToCommand(Console.ReadLine().Trim());
 
                 string outputString;
@@ -31,8 +52,8 @@ namespace Zork
                     case Commands.SOUTH:
                     case Commands.EAST:
                     case Commands.WEST:
-                        outputString = Move(command) ? $"You moved {command}" : "The way is shut!";       
-                         break;
+                        outputString = Move(command) ? $"You moved {command}" : "The way is shut!";
+                        break;
 
                     default:
                         outputString = "Unknown command.";
@@ -44,34 +65,68 @@ namespace Zork
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands command) ? command : Commands.UNKNOWN;
         private static bool Move(Commands command)
         {
-            bool didMove = false;
+            Assert.IsTrue(IsDirections.Contains(command), "Invalid command");
 
-            switch(command)
-            { 
-                case Commands.EAST when CurrentRoomIndex < Rooms.Length - 1:
-                        CurrentRoomIndex++;
-                        didMove = true;
-                        break;
+            bool found = false;
+            foreach (Commands direction in IsDirections)
+            {
+                if (command == direction)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found == false)
+            {
+                throw new InvalidOperationException("Invalid Direction");
+            }
 
-                case Commands.WEST when CurrentRoomIndex > 0:
-                        CurrentRoomIndex--;
-                        didMove = true;
-                        break;
+            bool didMove = true;
+            switch (command)
+            {
+                case Commands.NORTH when Location.Row < Rooms.GetLength(0) - 1:
+                    Location.Row++;                
+                    break;
+
+                case Commands.SOUTH when Location.Row > 0:
+                    Location.Row--;
+                    break;
+
+                case Commands.EAST when Location.Column < Rooms.GetLength(1) - 1:
+                    Location.Column++;
+                    break;
+
+                case Commands.WEST when Location.Column > 0:
+                    Location.Column--;
+                    break;
+
+                default:
+                    didMove = false;
+                    break;
             }
             return didMove;
         }
-        private static string[] Rooms =
+
+        private static bool IsDirection(Commands command) => IsDirections.Contains(command);
+      
+        private static readonly string[,] Rooms =
         {
 
-            "Forest",
-            "West of House",
-            "Behind House",
-            "Clearing",
-            "Canyon View"
+           { "Rocky Trail", "South of House",  "Canyon View" },
+           { "Forest", "West of House", "Behind House" },
+           { "Dense Woods", "North of House", "Clearing" }
 
-    };
-        private static int CurrentRoomIndex = 1;
+              };
+ 
+        private static readonly Commands[] IsDirections =
+            {
+            Commands.NORTH,
+            Commands.SOUTH,
+            Commands.EAST,
+            Commands.WEST
+            };
+
+        private static (int Row, int Column) Location = (1, 1);
+    }
 } 
-}
-    
 
