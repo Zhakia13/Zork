@@ -37,43 +37,48 @@ namespace Zork
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
-                Console.Write($"{CurrentRoom}\n >");
-
+                Console.Write($"{CurrentRoom}\n");
                 if (previousRoom != CurrentRoom)
                 {
-                    Console.WriteLine(CurrentRoom.Description);
+                    Look();
                     previousRoom = CurrentRoom;
                 }
 
                 string inputString = Console.ReadLine().Trim();
                 command = ToCommand(inputString);
 
-                string outputString;
                 switch (command)
                 {
                     case Commands.QUIT:
-                        outputString = "Thank you for playing!";
+                        Console.WriteLine("Thank you for playing!");
                         break;
 
                     case Commands.LOOK:
-                        outputString = $"{CurrentRoom.Description}";
+                        Look();
                         break;
 
                     case Commands.NORTH:
                     case Commands.SOUTH:
                     case Commands.EAST:
                     case Commands.WEST:
-                        outputString = Move(command) ? $"You moved {command}" : "The way is shut!";
+                        if (Move(command) == false)
+                        {
+                            Console.Write("The way is shut! \n");
+                        }
                         break;
 
                     default:
-                        outputString = "Unknown command.";
+                        Console.WriteLine("Unknown command.");
                         break;
                 }
-                Console.WriteLine(outputString);
             }
         }
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands command) ? command : Commands.UNKNOWN;
+
+        private static void Look()
+        {
+            Console.WriteLine(CurrentRoom.Description);
+        }
 
         private static bool Move(Commands command)
         {
