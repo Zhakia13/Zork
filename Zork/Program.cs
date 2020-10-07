@@ -31,22 +31,13 @@ namespace Zork
             }
         }
 
-        static Program()
-        {
-            RoomsByName = new Dictionary<string, Room>();
-            foreach (Room room in Rooms)
-            {
-                RoomsByName.Add(room.Name, room);
-            }
-        }
-
         static void Main(string[] args)
         {
-
-            const string roomsFilename = "Rooms.txt"; 
-
             Console.WriteLine("Welcome to Zork!");
-            InitializeRoomDescriptions(roomsFilename);
+
+            const string defaultroomsFilename = "Rooms.json";
+            string roomsFilename = args.Length > 0 ? args[(int)CommandLineArguments.RoomsFilename] : defaultroomsFilename;
+            InitializeRooms(roomsFilename);
 
             Room previousRoom = null;
             Commands command = Commands.UNKNOWN;
@@ -59,6 +50,7 @@ namespace Zork
                     previousRoom = CurrentRoom;
                 }
 
+                Console.Write(">");
                 string inputString = Console.ReadLine().Trim();
                 command = ToCommand(inputString);
 
@@ -125,34 +117,18 @@ namespace Zork
             return didMove;
         }
 
-        private static void InitializeRoomDescriptions(string roomsFilename)
+        private static void InitializeRooms(string roomsFilename)
         {
-            const string separator = "##";
-            const int expectedFieldCount = 2;
+            Rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFilename));
 
-            string[] lines = File.ReadAllLines(roomsFilename);
-            foreach (string line in lines)
+            RoomsByName = new Dictionary<string, Room>();
+            foreach (Room room in Rooms)
             {
-                string[] fields = line.Split(separator);
-                if (fields.Length != expectedFieldCount)
-                {
-                    throw new InvalidDataException("Invalid record in file.");
-                }
-
-                string name = fields[(int)Fields.Name];
-                string description = fields[(int)Fields.Description];
-                RoomsByName[name].Description = description;
+                RoomsByName.Add(room.Name, room);
             }
- }
+        }
 
-        private static readonly Room[,] Rooms =
-        {
-
-           {new Room ("Rocky Trail"), new Room("South of House"), new Room("Canyon View")},
-           {new Room ("Forest"), new Room("West of House"), new Room("Behind House")},
-           {new Room ("Dense Woods"), new Room("North of House"), new Room("Clearing")}
-
-              };
+        private static Room[,] Rooms;
 
         private static readonly Commands[] IsDirections =
             {
@@ -162,14 +138,13 @@ namespace Zork
             Commands.WEST
             };
 
-        private static readonly Dictionary<string, Room> RoomsByName;
+        private static Dictionary<string, Room> RoomsByName;
 
         private static (int Row, int Column) Location = (1, 1);
 
-        private enum Fields
+        private enum CommandLineArguments
         {
-            Name = 0,
-            Description = 1
+            RoomsFilename = 0
         }
     }
 }
