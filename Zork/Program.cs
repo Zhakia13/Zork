@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -30,9 +31,19 @@ namespace Zork
             }
         }
 
+        static Program()
+        {
+            RoomsByName = new Dictionary<string, Room>();
+            foreach (Room room in Rooms)
+            {
+                RoomsByName.Add(room.Name, room);
+            }
+        }
+
         static void Main(string[] args)
         {
-          const string roomsFilename = "Rooms.txt";
+
+            const string roomsFilename = "Rooms.txt"; 
 
             Console.WriteLine("Welcome to Zork!");
             InitializeRoomDescriptions(roomsFilename);
@@ -116,12 +127,6 @@ namespace Zork
 
         private static void InitializeRoomDescriptions(string roomsFilename)
         {
-            var RoomsByName = new Dictionary<string, Room>();
-            foreach (Room room in Rooms)
-            {
-                RoomsByName.Add(room.Name, room);
-            }
-
             const string separator = "##";
             const int expectedFieldCount = 2;
 
@@ -131,14 +136,14 @@ namespace Zork
                 string[] fields = line.Split(separator);
                 if (fields.Length != expectedFieldCount)
                 {
-                    throw new InvalidDataException("Invalid record.");
+                    throw new InvalidDataException("Invalid record in file.");
                 }
 
                 string name = fields[(int)Fields.Name];
                 string description = fields[(int)Fields.Description];
                 RoomsByName[name].Description = description;
             }
-        }
+ }
 
         private static readonly Room[,] Rooms =
         {
@@ -157,6 +162,8 @@ namespace Zork
             Commands.WEST
             };
 
+        private static readonly Dictionary<string, Room> RoomsByName;
+
         private static (int Row, int Column) Location = (1, 1);
 
         private enum Fields
@@ -164,7 +171,6 @@ namespace Zork
             Name = 0,
             Description = 1
         }
-
     }
 }
 
