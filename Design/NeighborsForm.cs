@@ -34,5 +34,10 @@ namespace Zork.Builder
                 Neighbor = neighbor;
             }
         }
+
+        private void OKNeighborbutton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

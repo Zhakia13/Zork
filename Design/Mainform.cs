@@ -16,7 +16,7 @@ namespace Zork.Builder.Forms
 
         private Game Game { get; set; }
 
-        private GameViewModel FullPath;
+        private string GameFilename;
 
         private GameViewModel ViewModel
         {
@@ -26,8 +26,9 @@ namespace Zork.Builder.Forms
                 if (mViewModel != value)
                 {
                     mViewModel = value;
-                    gameViewModelBindingSource.DataSource = mViewModel;                 
-                }
+                    gameViewModelBindingSource.DataSource = mViewModel;
+                    roomsBindingSource.DataSource = mViewModel?.Rooms;
+              }
             }
         }
         private bool IsWorldLoaded
@@ -36,6 +37,8 @@ namespace Zork.Builder.Forms
             {
                 mIsWorldLoaded = value;
                 Tab.Enabled = mIsWorldLoaded;
+                saveToolStripMenuItem.Enabled = mIsWorldLoaded;
+                SaveAsItem.Enabled = mIsWorldLoaded;
             } 
         }
 
@@ -44,25 +47,45 @@ namespace Zork.Builder.Forms
             InitializeComponent();
             ViewModel = new GameViewModel(Game);
             gameViewModelBindingSource.DataSource = mViewModel;
+            roomsBindingSource.DataSource = mViewModel?.Rooms;
             IsWorldLoaded = false;
-            //      UpdateTitle();
             CreateGame();
         }
 
          private void CreateGame()
          {
-             FullPath = null;
+             GameFilename = null;
              Game = new Game(new World(), null);
          } 
- 
-        //      private void UpdateTitle()
-        //      {
-        //          string gameFilename = string.IsNullOrWhiteSpace(GameFilename) ? "Untitled" : Path.GetFileNameWithoutExtension(GameFilename);
-        //          Text = $"Zork Builder - {gameFilename}";
-        //      }
+
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateGame();
+            IsWorldLoaded = true;
+        }
+
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+             if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ViewModel.Game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(openFileDialog.FileName));
+                ViewModel.FullPath = openFileDialog.FileName;
+                IsWorldLoaded = true;
+            }
+        }
+
+        private void SaveAsItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK || string.IsNullOrWhiteSpace(GameFilename))
+                {
+                    ViewModel.FullPath = saveFileDialog.FileName;
+                    ViewModel.SaveGame();
+                }
+        }
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViewModel.SaveGame();
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -71,8 +94,18 @@ namespace Zork.Builder.Forms
             {
                 if (addRoom.ShowDialog() == DialogResult.OK)
                 {
-                    Room room = new Room { Name = addRoom.RoomName };
+                    bool existingRoom = false;
+
+                    if (existingRoom == false)
+                    { 
+
+                    Room room = new Room(addRoom.RoomName );
                     ViewModel.Rooms.Add(room);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Room named \" {addRoom.RoomName}\" already exits.");
+                    }
                 }
             } 
         }
@@ -91,50 +124,14 @@ namespace Zork.Builder.Forms
             DeleteButton.Enabled = RoomlistBox.SelectedItem != null;
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                ViewModel.Game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(openFileDialog.FileName));
-                ViewModel.FullPath = openFileDialog.FileName;
-                IsWorldLoaded = true;
-            }
-        }
-        //
-        //    private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        //    {
-        //
-        //        if (string.IsNullOrWhiteSpace(GameFilename))
-        //        {
-        //            saveToolStripMenuItem.PerformClick();
-        //        }
-        //        else
-        //        {
-        //            SaveGame();
-        //        }
-        //
-        //    }
-        private void SaveAsItem_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    ViewModel.FullPath = saveFileDialog.FileName;
-                 //   UpdateTitle();
-                    ViewModel.SaveGame();
-                }
-        }
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ViewModel.SaveGame();
+            Close();
         }
 
         private GameViewModel mViewModel;
 
         private bool mIsWorldLoaded;
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
     }
 }

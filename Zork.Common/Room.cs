@@ -8,7 +8,9 @@ namespace Zork
 {
     public class Room : IEquatable<Room>
     {
+#pragma warning disable CS0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067
 
         [JsonProperty(Order = 1)]
         public string Name { get; set; }
@@ -21,6 +23,11 @@ namespace Zork
 
         [JsonIgnore]
         public IReadOnlyDictionary<Directions, Room> Neighbors { get; private set; }
+
+        public Room(string name = null)
+        {
+            Name = name;
+        }
 
         public static bool operator == (Room lhs, Room rhs)
         {

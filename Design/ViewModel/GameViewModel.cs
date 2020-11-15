@@ -1,6 +1,5 @@
 ﻿using Zork;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.IO;
 using Newtonsoft.Json;
 using System;
@@ -9,9 +8,9 @@ namespace Design.ViewModel
 {
    public class GameViewModel: INotifyPropertyChanged
     {
+#pragma warning disable CS0067
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        public BindingList<Room> Rooms { get; set; }
+#pragma warning restore CS0067
 
         public Game Game
         {       
@@ -33,23 +32,26 @@ namespace Design.ViewModel
             }
         }
 
+        public BindingList<Room> Rooms { get; set; }
 
-        public string FullPath
-        { get => mFullPath;
-            set 
-            {
-                if (mFullPath != value)
-                {
-                    mFullPath = value;
-                    OnPropertyChanged();
-                }
-            }
+        public string FullPath { get; set; }
+
+        public string ExitMessage
+        {
+            get => mGame.ExitMessage;
+            set => mGame.ExitMessage = value;
         }
 
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public string WelcomeMessage
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));           
+            get => mGame.WelcomeMessage;
+            set => mGame.WelcomeMessage = value;
+        }
+
+        public string StartingLocation
+        {
+            get => mGame.StartingLocation;
+            set => mGame.StartingLocation = value;
         }
 
         public GameViewModel( Game game = null)
@@ -73,9 +75,6 @@ namespace Design.ViewModel
             }
         }
 
-        private string mFullPath;
-
         private Game mGame;
-
     }
 }

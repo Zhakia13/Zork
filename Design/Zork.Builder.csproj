@@ -79,6 +79,12 @@
     <Compile Include="AddRoom.Designer.cs">
       <DependentUpon>AddRoom.cs</DependentUpon>
     </Compile>
+    <Compile Include="DirectionsNeighbor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DirectionsNeighbor.Designer.cs">
+      <DependentUpon>DirectionsNeighbor.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -87,11 +93,17 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="NeighborButtons.cs">
+    <Compile Include="NeighborControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NeighborButtons.Designer.cs">
-      <DependentUpon>NeighborButtons.cs</DependentUpon>
+    <Compile Include="NeighborControl.Designer.cs">
+      <DependentUpon>NeighborControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NeighborName.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NeighborName.Designer.cs">
+      <DependentUpon>NeighborName.cs</DependentUpon>
     </Compile>
     <Compile Include="NeighborsForm.cs">
       <SubType>Form</SubType>
@@ -107,12 +119,18 @@
     <EmbeddedResource Include="AddRoom.resx">
       <DependentUpon>AddRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DirectionsNeighbor.resx">
+      <DependentUpon>DirectionsNeighbor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="NeighborButtons.resx">
-      <DependentUpon>NeighborButtons.cs</DependentUpon>
+    <EmbeddedResource Include="NeighborControl.resx">
+      <DependentUpon>NeighborControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NeighborName.resx">
+      <DependentUpon>NeighborName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NeighborsForm.resx">
       <DependentUpon>NeighborsForm.cs</DependentUpon>
@@ -128,18 +146,20 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\AddRoom.datasource" />
     <None Include="Properties\DataSources\Design.ViewModel.GameViewModel.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel1.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel2.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel3.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel4.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel5.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel6.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel7.datasource" />
+    <None Include="Properties\DataSources\Design.ViewModel.GameViewModel8.datasource" />
     <None Include="Properties\DataSources\Zork.Assert.datasource" />
-    <None Include="Properties\DataSources\Zork.Builder.Forms.MainForm.datasource" />
-    <None Include="Properties\DataSources\Zork.Builder.Properties.Resources.datasource" />
-    <None Include="Properties\DataSources\Zork.Builder.Properties.Settings.datasource" />
     <None Include="Properties\DataSources\Zork.Game.datasource" />
     <None Include="Properties\DataSources\Zork.Player.datasource" />
     <None Include="Properties\DataSources\Zork.Room.datasource" />
     <None Include="Properties\DataSources\Zork.World.datasource" />
-    <None Include="Properties\DataSources\ZorkBuilder.MainForm.datasource" />
-    <None Include="Properties\DataSources\ZorkBuilder.Program.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

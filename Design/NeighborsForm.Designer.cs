@@ -69,6 +69,7 @@
             this.OKNeighborbutton.TabIndex = 4;
             this.OKNeighborbutton.Text = "OK";
             this.OKNeighborbutton.UseVisualStyleBackColor = true;
+            this.OKNeighborbutton.Click += new System.EventHandler(this.OKNeighborbutton_Click);
             // 
             // DeleteNeighborbutton
             // 

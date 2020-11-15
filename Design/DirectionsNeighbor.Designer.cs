@@ -1,6 +1,6 @@
 ﻿namespace Zork.Builder
 {
-    partial class NeighborButtons
+    partial class DirectionsNeighbor
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,36 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.NorthButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.DirectionstextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // NorthButton
+            // DirectionstextBox
             // 
-            this.NorthButton.Location = new System.Drawing.Point(11, 12);
-            this.NorthButton.Name = "NorthButton";
-            this.NorthButton.Size = new System.Drawing.Size(79, 21);
-            this.NorthButton.TabIndex = 0;
-            this.NorthButton.UseVisualStyleBackColor = true;
-            this.NorthButton.Click += new System.EventHandler(this.NorthButton_Click);
+            this.DirectionstextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DirectionstextBox.Location = new System.Drawing.Point(13, 3);
+            this.DirectionstextBox.Name = "DirectionstextBox";
+            this.DirectionstextBox.ReadOnly = true;
+            this.DirectionstextBox.Size = new System.Drawing.Size(100, 20);
+            this.DirectionstextBox.TabIndex = 0;
+            this.DirectionstextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "<None>";
-            // 
-            // NeighborButtons
+            // DirectionsNeighbor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.NorthButton);
-            this.Name = "NeighborButtons";
-            this.Size = new System.Drawing.Size(102, 61);
+            this.Controls.Add(this.DirectionstextBox);
+            this.Name = "DirectionsNeighbor";
+            this.Size = new System.Drawing.Size(123, 28);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -65,7 +55,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button NorthButton;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox DirectionstextBox;
     }
 }

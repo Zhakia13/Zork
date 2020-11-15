@@ -19,5 +19,6 @@ namespace Zork.Builder
         {
             OKButton.Enabled = !string.IsNullOrEmpty(RoomName);
         }
+
     }
 }
